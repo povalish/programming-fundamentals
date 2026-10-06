@@ -5,6 +5,7 @@ DIR ?= src
 export EXERCISE_DIR := $(DIR)
 
 .PHONY: help setup test test-ts test-go watch watch-ts watch-go validate-dir
+.PHONY: bench-go watch-bench-go
 .PHONY: fmt fmt-ts fmt-go fmt-check lint lint-ts lint-go typecheck check
 
 help:
@@ -16,6 +17,8 @@ help:
 	  'make test-go     Run only Go tests' \
 	  'make watch-ts    Watch only TypeScript tests' \
 	  'make watch-go    Watch only Go tests' \
+	  'make bench-go    Run Go benchmarks with memory statistics' \
+	  'make watch-bench-go Watch Go benchmarks (Ctrl-C to stop)' \
 	  '                 Add DIR=src/dojo/bubble_sort to select a folder' \
 	  'make fmt         Format TypeScript and Go files' \
 	  'make lint        Run Oxlint and golangci-lint' \
@@ -46,6 +49,19 @@ test-go: validate-dir
 	else \
 	  printf 'No Go files in %s; skipping.\n' "$(DIR)"; \
 	fi
+
+bench-go: validate-dir
+	@if [ -n "$$(find "$(DIR)" -type f -name '*.go' -print -quit)" ]; then \
+	  cd "$(DIR)" && go test -run='^$$' -bench=. -benchmem ./...; \
+	else \
+	  printf 'No Go files in %s; skipping.\n' "$(DIR)"; \
+	fi
+
+watch-bench-go: validate-dir
+	@test -x .tools/watchexec || { printf 'Run make setup first.\n' >&2; exit 1; }
+	.tools/watchexec --watch "$(DIR)" --watch-non-recursive . \
+	  --exts go,mod,sum --debounce 150ms --on-busy-update restart \
+	  -- $(MAKE) --no-print-directory bench-go
 
 watch: validate-dir
 	pnpm exec concurrently --names TS,Go --kill-others \

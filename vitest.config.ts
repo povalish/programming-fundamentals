@@ -20,6 +20,7 @@ export default defineConfig({
   clearScreen: false,
   test: {
     environment: "node",
+    globals: true,
     include: [`${testDirectory}/**/*_test.ts`],
     passWithNoTests: true,
   },
