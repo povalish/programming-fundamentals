@@ -5,6 +5,8 @@
   "scripts": {
     "test": "vitest --watch",
     "test:run": "vitest run",
+    "bench": "vitest bench --watch --testNamePattern=Benchmark:",
+    "bench:run": "vitest bench --run --testNamePattern=Benchmark:",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --deny-warnings src vitest.config.ts",
     "fmt": "oxfmt --write src vitest.config.ts package.json tsconfig.json .oxlintrc.json .oxfmtrc.json",

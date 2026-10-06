@@ -22,6 +22,10 @@ export default defineConfig({
     environment: "node",
     globals: true,
     include: [`${testDirectory}/**/*_test.ts`],
+    testNamePattern: /^(?!.*Benchmark:)/,
+    benchmark: {
+      include: [`${testDirectory}/**/*_test.ts`],
+    },
     passWithNoTests: true,
   },
 });

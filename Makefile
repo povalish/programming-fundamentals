@@ -5,7 +5,7 @@ DIR ?= src
 export EXERCISE_DIR := $(DIR)
 
 .PHONY: help setup test test-ts test-go watch watch-ts watch-go validate-dir
-.PHONY: bench-go watch-bench-go
+.PHONY: bench-ts bench-go watch-bench-ts watch-bench-go
 .PHONY: fmt fmt-ts fmt-go fmt-check lint lint-ts lint-go typecheck check
 
 help:
@@ -17,6 +17,8 @@ help:
 	  'make test-go     Run only Go tests' \
 	  'make watch-ts    Watch only TypeScript tests' \
 	  'make watch-go    Watch only Go tests' \
+	  'make bench-ts    Run only TypeScript benchmarks marked Benchmark:' \
+	  'make watch-bench-ts Watch TypeScript benchmarks (Ctrl-C to stop)' \
 	  'make bench-go    Run Go benchmarks with memory statistics' \
 	  'make watch-bench-go Watch Go benchmarks (Ctrl-C to stop)' \
 	  '                 Add DIR=src/dojo/bubble_sort to select a folder' \
@@ -49,6 +51,12 @@ test-go: validate-dir
 	else \
 	  printf 'No Go files in %s; skipping.\n' "$(DIR)"; \
 	fi
+
+bench-ts: validate-dir
+	pnpm bench:run
+
+watch-bench-ts: validate-dir
+	pnpm bench
 
 bench-go: validate-dir
 	@if [ -n "$$(find "$(DIR)" -type f -name '*.go' -print -quit)" ]; then \
