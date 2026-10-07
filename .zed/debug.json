@@ -1,0 +1,36 @@
+[
+  {
+    "label": "Debug Vitest: current file",
+    "adapter": "JavaScript",
+    "type": "node",
+    "request": "launch",
+    "program": "$ZED_WORKTREE_ROOT/node_modules/vitest/vitest.mjs",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "args": [
+      "run",
+      "$ZED_FILE",
+      "--no-file-parallelism",
+      "--test-timeout=0"
+    ],
+    "autoAttachChildProcesses": true,
+    "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+    "console": "integratedTerminal"
+  },
+  {
+    "label": "Debug Vitest: test at cursor (it/test line)",
+    "adapter": "JavaScript",
+    "type": "node",
+    "request": "launch",
+    "program": "$ZED_WORKTREE_ROOT/node_modules/vitest/vitest.mjs",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "args": [
+      "run",
+      "$ZED_FILE:$ZED_ROW",
+      "--no-file-parallelism",
+      "--test-timeout=0"
+    ],
+    "autoAttachChildProcesses": true,
+    "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+    "console": "integratedTerminal"
+  }
+]
