@@ -6,10 +6,12 @@ cd "$(dirname "$0")"
 watchexec_version=2.7.4
 golangci_version=2.14.0
 
+exe_suffix=
 case "$(uname -s)" in
   Darwin) go_os=darwin; rust_os=apple-darwin ;;
   Linux) go_os=linux; rust_os=unknown-linux-musl ;;
-  *) printf 'Supported systems: macOS and Linux.\n' >&2; exit 1 ;;
+  MINGW*|MSYS*) go_os=windows; rust_os=pc-windows-msvc; exe_suffix=.exe ;;
+  *) printf 'Supported systems: macOS, Linux and Windows (Git Bash).\n' >&2; exit 1 ;;
 esac
 case "$(uname -m)" in
   arm64|aarch64) go_arch=arm64; rust_arch=aarch64 ;;
@@ -36,27 +38,43 @@ verify() {
   fi
 }
 
-if [ ! -x .tools/watchexec ] || ! .tools/watchexec --version | grep -Fq "watchexec $watchexec_version"; then
+if [ ! -x ".tools/watchexec$exe_suffix" ] || ! ".tools/watchexec$exe_suffix" --version | grep -Fq "watchexec $watchexec_version"; then
   archive="watchexec-$watchexec_version-$rust_arch-$rust_os.tar.xz"
+  if [ "$go_os" = windows ]; then
+    archive="watchexec-$watchexec_version-$rust_arch-$rust_os.zip"
+  fi
   base="https://github.com/watchexec/watchexec/releases/download/v$watchexec_version"
   curl -fL --retry 3 "$base/$archive" -o "$task_tmp/$archive"
   curl -fsSL --retry 3 "$base/SHA256SUMS" -o "$task_tmp/watchexec-checksums"
   verify "$archive" watchexec-checksums
   mkdir "$task_tmp/watchexec"
-  tar -xJf "$task_tmp/$archive" -C "$task_tmp/watchexec" --strip-components=1
-  install -m 755 "$task_tmp/watchexec/watchexec" .tools/watchexec
+  if [ "$go_os" = windows ]; then
+    unzip -q "$task_tmp/$archive" -d "$task_tmp/watchexec"
+    install -m 755 "$task_tmp/watchexec/${archive%.zip}/watchexec.exe" .tools/watchexec.exe
+  else
+    tar -xJf "$task_tmp/$archive" -C "$task_tmp/watchexec" --strip-components=1
+    install -m 755 "$task_tmp/watchexec/watchexec" .tools/watchexec
+  fi
 fi
 
-if [ ! -x .tools/golangci-lint ] || ! .tools/golangci-lint version | grep -Fq "version $golangci_version"; then
+if [ ! -x ".tools/golangci-lint$exe_suffix" ] || ! ".tools/golangci-lint$exe_suffix" version | grep -Fq "version $golangci_version"; then
   archive="golangci-lint-$golangci_version-$go_os-$go_arch.tar.gz"
+  if [ "$go_os" = windows ]; then
+    archive="golangci-lint-$golangci_version-$go_os-$go_arch.zip"
+  fi
   base="https://github.com/golangci/golangci-lint/releases/download/v$golangci_version"
   curl -fL --retry 3 "$base/$archive" -o "$task_tmp/$archive"
   curl -fsSL --retry 3 "$base/golangci-lint-$golangci_version-checksums.txt" -o "$task_tmp/golangci-checksums"
   verify "$archive" golangci-checksums
   mkdir "$task_tmp/golangci"
-  tar -xzf "$task_tmp/$archive" -C "$task_tmp/golangci" --strip-components=1
-  install -m 755 "$task_tmp/golangci/golangci-lint" .tools/golangci-lint
+  if [ "$go_os" = windows ]; then
+    unzip -q "$task_tmp/$archive" -d "$task_tmp/golangci"
+    install -m 755 "$task_tmp/golangci/${archive%.zip}/golangci-lint.exe" .tools/golangci-lint.exe
+  else
+    tar -xzf "$task_tmp/$archive" -C "$task_tmp/golangci" --strip-components=1
+    install -m 755 "$task_tmp/golangci/golangci-lint" .tools/golangci-lint
+  fi
 fi
 
-.tools/watchexec --version
-.tools/golangci-lint version
+".tools/watchexec$exe_suffix" --version
+".tools/golangci-lint$exe_suffix" version
