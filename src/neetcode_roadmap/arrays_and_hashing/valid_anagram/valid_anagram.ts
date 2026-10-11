@@ -11,8 +11,8 @@ export function isAnagram(s: string, t: string): boolean {
   const alphabet = new Array(26).fill(0);
 
   for (let i = 0; i < s.length; i++) {
-    alphabet[s.charCodeAt(i) - 'a'.charCodeAt(0)] += 1;
-    alphabet[t.charCodeAt(i) - 'a'.charCodeAt(0)] -= 1;
+    alphabet[s.charCodeAt(i) - "a".charCodeAt(0)] += 1;
+    alphabet[t.charCodeAt(i) - "a".charCodeAt(0)] -= 1;
   }
 
   return alphabet.every((freq) => freq === 0);

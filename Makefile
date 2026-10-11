@@ -67,9 +67,9 @@ bench-go: validate-dir
 
 watch-bench-go: validate-dir
 	@test -x .tools/watchexec || { printf 'Run make setup first.\n' >&2; exit 1; }
-	.tools/watchexec --watch "$(DIR)" --watch-non-recursive . \
+	.tools/watchexec --shell=none --watch "$(DIR)" --watch-non-recursive . \
 	  --exts go,mod,sum --debounce 150ms --on-busy-update restart \
-	  -- $(MAKE) --no-print-directory bench-go
+	  -- "$(MAKE)" --no-print-directory bench-go
 
 watch: validate-dir
 	pnpm exec concurrently --names TS,Go --kill-others \
@@ -80,9 +80,9 @@ watch-ts: validate-dir
 
 watch-go: validate-dir
 	@test -x .tools/watchexec || { printf 'Run make setup first.\n' >&2; exit 1; }
-	.tools/watchexec --watch "$(DIR)" --watch-non-recursive . \
+	.tools/watchexec --shell=none --watch "$(DIR)" --watch-non-recursive . \
 	  --exts go,mod,sum --debounce 150ms --on-busy-update restart \
-	  -- $(MAKE) --no-print-directory test-go
+	  -- "$(MAKE)" --no-print-directory test-go
 
 fmt: fmt-ts fmt-go
 

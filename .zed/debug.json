@@ -1,5 +1,23 @@
 [
   {
+    "label": "Debug Go: tests in current folder",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "test",
+    "program": "$ZED_DIRNAME",
+    "cwd": "$ZED_DIRNAME",
+    "args": ["-test.v", "-test.timeout=0"]
+  },
+  {
+    "label": "Debug Go: test at cursor (Test function)",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "test",
+    "program": "$ZED_DIRNAME",
+    "cwd": "$ZED_DIRNAME",
+    "args": ["-test.run", "^${ZED_SYMBOL}$", "-test.v", "-test.timeout=0"]
+  },
+  {
     "label": "Debug Vitest: current file",
     "adapter": "JavaScript",
     "type": "node",
