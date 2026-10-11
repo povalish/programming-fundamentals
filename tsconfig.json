@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "vitest.config.ts"]
+  "include": ["src/**/*.ts", "vitest.config.ts", "src/neetcode_roadmap/arrays_and_hashing/longest_common_prefix/longest_common_prefix.go"]
 }
