@@ -8,6 +8,6 @@
     "typeAware": true
   },
   "rules": {
-     "unicorn/no-new-array": "off"
-   }
+    "unicorn/no-new-array": "off"
+  }
 }
