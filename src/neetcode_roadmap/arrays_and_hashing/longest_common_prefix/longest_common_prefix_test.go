@@ -2,6 +2,9 @@ package longestcommonprefix
 
 import "testing"
 
+//
+//
+
 func Test_longestCommonPrefix(t *testing.T) {
 	tests := []struct {
 		name string
