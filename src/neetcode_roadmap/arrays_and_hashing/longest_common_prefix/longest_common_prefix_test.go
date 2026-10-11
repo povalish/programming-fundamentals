@@ -24,3 +24,11 @@ func Test_longestCommonPrefix(t *testing.T) {
 		})
 	}
 }
+
+func Bench_longestCommonPrefix(b *testing.B) {
+	b.ReportAllocs()
+
+	for b.Loop() {
+		longestCommonPrefix([]string{"dance", "dag", "danger", "damage"})
+	}
+}

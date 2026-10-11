@@ -38,4 +38,9 @@ describe("Longest Common Prefix", () => {
       expect(result).toEqual("");
     });
   });
+
+  it("Benchmark: longestCommonPrefix()", async ({ bench }) => {
+    const fnRef = longestCommonPrefix;
+    await bench("run", () => fnRef(["dance", "dag", "danger", "damage"])).run();
+  });
 });
