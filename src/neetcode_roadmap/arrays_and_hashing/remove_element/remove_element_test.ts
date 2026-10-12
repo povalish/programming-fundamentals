@@ -51,10 +51,9 @@ describe("Remove Element", () => {
   });
 
   it("Benchmark: removeElement()", async ({ bench }) => {
-    const nums = [0, 1, 2, 2, 3, 0, 4, 2];
     const val = 2;
     const refFn = removeElement;
 
-    await bench("run", () => refFn(nums, val)).run();
+    await bench("fresh array", () => refFn([0, 1, 2, 2, 3, 0, 4, 2], val)).run();
   });
 });
