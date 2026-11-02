@@ -5,7 +5,7 @@ DIR ?= src
 export EXERCISE_DIR := $(DIR)
 
 .PHONY: help setup test test-ts test-go watch watch-ts watch-go validate-dir
-.PHONY: bench-ts bench-go watch-bench-ts watch-bench-go
+.PHONY: bench bench-ts bench-go watch-bench-ts watch-bench-go test-bench-report
 .PHONY: fmt fmt-ts fmt-go fmt-check lint lint-ts lint-go typecheck check
 
 help:
@@ -17,6 +17,7 @@ help:
 	  'make test-go     Run only Go tests' \
 	  'make watch-ts    Watch only TypeScript tests' \
 	  'make watch-go    Watch only Go tests' \
+	  'make bench       Compare Go and TypeScript benchmarks in one table' \
 	  'make bench-ts    Run only TypeScript benchmarks marked Benchmark:' \
 	  'make watch-bench-ts Watch TypeScript benchmarks (Ctrl-C to stop)' \
 	  'make bench-go    Run Go benchmarks with memory statistics' \
@@ -51,6 +52,12 @@ test-go: validate-dir
 	else \
 	  printf 'No Go files in %s; skipping.\n' "$(DIR)"; \
 	fi
+
+bench: validate-dir
+	node scripts/bench.mjs
+
+test-bench-report:
+	node --test scripts/bench-report.test.mjs
 
 bench-ts: validate-dir
 	pnpm bench:run
@@ -113,4 +120,4 @@ lint-go:
 typecheck:
 	pnpm typecheck
 
-check: test typecheck lint fmt-check
+check: test test-bench-report typecheck lint fmt-check

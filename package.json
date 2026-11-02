@@ -8,9 +8,9 @@
     "bench": "vitest bench --watch --testNamePattern=Benchmark:",
     "bench:run": "vitest bench --run --testNamePattern=Benchmark:",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint --deny-warnings src vitest.config.ts",
-    "fmt": "oxfmt --write src vitest.config.ts package.json tsconfig.json .oxlintrc.json .oxfmtrc.json",
-    "fmt:check": "oxfmt --check src vitest.config.ts package.json tsconfig.json .oxlintrc.json .oxfmtrc.json"
+    "lint": "oxlint --deny-warnings src scripts vitest.config.ts",
+    "fmt": "oxfmt --write src scripts vitest.config.ts package.json tsconfig.json .oxlintrc.json .oxfmtrc.json",
+    "fmt:check": "oxfmt --check src scripts vitest.config.ts package.json tsconfig.json .oxlintrc.json .oxfmtrc.json"
   },
   "devDependencies": {
     "@types/node": "24.19.1",
