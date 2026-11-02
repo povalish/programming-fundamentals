@@ -28,7 +28,10 @@
       "run",
       "$ZED_FILE",
       "--no-file-parallelism",
-      "--test-timeout=0"
+      "--test-timeout=0",
+      "--hook-timeout=0",
+      "--passWithNoTests=false",
+      "--reporter=verbose"
     ],
     "autoAttachChildProcesses": true,
     "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
@@ -45,7 +48,10 @@
       "run",
       "$ZED_FILE:$ZED_ROW",
       "--no-file-parallelism",
-      "--test-timeout=0"
+      "--test-timeout=0",
+      "--hook-timeout=0",
+      "--passWithNoTests=false",
+      "--reporter=verbose"
     ],
     "autoAttachChildProcesses": true,
     "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
